@@ -57,8 +57,28 @@ async function closeConnection() {
         console.error('Error closing MongoDB connection:', error);
     }
 }
+
+async function testLogin() {
+    try {
+        console.log('Simulating login...');
+        const user = await User.User.findOne({ user_id: userData.user_id });
+        if (!user) {
+            console.log('User not found');
+            return;
+        }
+        const isPasswordMatch = await user.comparePassword(userData.password);
+        if (isPasswordMatch) {
+            console.log('Login successful');
+        } else {
+            console.log('Invalid password');
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+    }
+}
 // Run the test functions
 testAddUser()
+    .then(()=> testLogin())
     .then(() => testEditUser())
     .then(() => testDeleteUser())
     .then(() => closeConnection())
