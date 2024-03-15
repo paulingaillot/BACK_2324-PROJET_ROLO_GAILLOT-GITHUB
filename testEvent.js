@@ -31,7 +31,6 @@ async function testAddUser() {
 }
 let eventDatas;
 async function testAddEvent(user) { // Pass the user object as a parameter
-    console.log(user)
     try {
         console.log('Adding an event...');
         const eventData = {

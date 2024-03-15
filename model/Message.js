@@ -26,9 +26,13 @@ class Message {
     }
     static async findByConversationAndUser(conversationId, userId) {
         let messages = await MessageModel.find({ conversation: conversationId });
+
         messages = messages.filter(message =>
-            message.sender.toString() === userId || message.receiver.toString() === userId
+            message.sender.equals(userId) || message.receiver.equals(userId)
         );
+
+
+
         return messages;
     }
 }

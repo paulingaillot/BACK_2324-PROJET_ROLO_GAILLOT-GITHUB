@@ -1,6 +1,7 @@
 // require('dotenv').config()
 const mongoose = require('mongoose');
 const User = require('./model/user');
+const Event = require('./model/event');
 
 // const args = process.argv.slice(2);
 // const url = args[0] ?? process.env.CONNECTION_MONGO_STR;
@@ -19,6 +20,16 @@ let userData = {
     mail: "abc@gmail.com",
     picture: Buffer.from('example_picture_data'),
     password: "password123",
+    born: new Date("1990-01-01")
+};
+
+let userData2 = {
+    name: "John2",
+    username: "john1234",
+    surname: "Doe",
+    mail: "abc@gmail.com",
+    picture: Buffer.from('example_picture_data'),
+    password: "password1234",
     born: new Date("1990-01-01")
 };
 async function testAddUser() {
@@ -88,11 +99,41 @@ async function testLogin() {
         console.error('Error during login:', error);
     }
 }
+
+async function testAddFavourite() {
+
+    try {
+        console.log('Adding an event...');
+        let user = await User.addUser(userData2);
+        const eventData = {
+            creator: user._id,
+            name: "blbl",
+            image: Buffer.from('example_picture_data'),
+            theme: 'event',
+            prix: 15,
+            date: new Date('1990-01-01')
+        };
+
+        const newEvent = await Event.addEvent(eventData);
+        console.log('Event added:', newEvent);
+        user = await User.addToFavourite(user._id, newEvent._id);
+        console.log(user);
+        user = await User.deleteOfFavourite(user._id,newEvent._id);
+        console.log(user);
+
+        await User.deleteUser(user._id);
+        await Event.deleteEvent(newEvent._id);
+    } catch (error) {
+        console.error('Error adding event:', error);
+        throw error;
+    }
+
+}
 // Run the test functions
 testAddUser()
-    .then(()=> testLogin())
     .then(() => testEditUser())
     .then(() => testGetUser())
     .then(() => testDeleteUser())
+    .then(() => testAddFavourite())
     .then(() => closeConnection())
     .catch(error => console.error('Test error:', error));

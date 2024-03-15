@@ -14,7 +14,7 @@ mongoose.connect("mongodb://localhost:27017/isen", {
 const userSchema = new mongoose.Schema({
     name: {type: String, required:true},
     surname: {type: String, required:true},
-    username: {type: String, required:true},
+    username: {type: String, required:true, unique: true},
     mail: {type:String, required:true},
     picture: { type: Buffer, required: true },
     password: { type: String, required: true, maxlength: 255 },
@@ -45,18 +45,29 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 const User = mongoose.model('User', userSchema);
 
 async function addUser(userData) {
-    const { name, username, surname, mail, picture, password, born } = userData;
-    const user = new User({
-        username: username,
-        name: name,
-        surname: surname,
-        mail: mail,
-        picture: picture,
-        password: password,
-        born: born,
-    });
-    return await user.save();
+    try {
+        const { name, username, surname, mail, picture, password, born } = userData;
+        const existingUser = await User.findOne({ username: username });
+        if (existingUser) {
+            return { error: 'Username is already taken' };
+        }
+
+        const user = new User({
+            username: username,
+            name: name,
+            surname: surname,
+            mail: mail,
+            picture: picture,
+            password: password,
+            born: born,
+        });
+        await user.save();
+        return user;
+    } catch (error) {
+        return { error: 'Failed to add user' }; // Return a generic error message
+    }
 }
+
 
 
 async function editUser(user_id, newData) {

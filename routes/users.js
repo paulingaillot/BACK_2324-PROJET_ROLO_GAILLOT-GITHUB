@@ -19,14 +19,20 @@ router.post('/addUser', async (req, res) => {
             }
         }
 
-        // Ajouter l'utilisateur en utilisant les données JSON fournies
         const newUser = await addUser(userData);
+        if (newUser.error) {
+            // Handle custom error returned by addUser function
+            return res.status(400).json({ error: newUser.error });
+        }
+
+        // If no error occurred, send the new user object
         res.status(201).json(newUser);
     } catch (error) {
         console.error('Error adding user:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 // Route pour modifier un utilisateur
 router.put('/:id', async (req, res) => {
@@ -78,6 +84,7 @@ router.post('/login', async (req, res) => {
             const isMatch = await user.comparePassword(password);
             if (!isMatch) {
                 return res.status(403).json({ message: 'Incorrect password' });
+
             }
 
             res.status(200).json({ message: 'Login successful', user: user });
