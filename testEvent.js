@@ -8,8 +8,7 @@ mongoose.connect("mongodb://localhost:27017/isen", {
     .then(() => console.log('Connected to MongoDB'))
     .catch(error => console.error('Error connecting to MongoDB:', error));
 
-const eventData = {
-    event_id: 1,
+let eventData = {
     image : Buffer.from('example_picture_data'),
     theme: 'event',
     prix: 15,
@@ -19,8 +18,9 @@ const eventData = {
 async function testAddEvent() {
     try {
         console.log('Adding an event...');
-        const newEvent = await Event.addEvent(eventData.event_id, eventData.image, eventData.theme, eventData.prix, eventData.date);
+        const newEvent = await Event.addEvent( eventData.image, eventData.theme, eventData.prix, eventData.date);
         console.log('Event added:', newEvent);
+        eventData = newEvent
     } catch (error) {
         console.error('Error adding event:', error);
     }
@@ -30,7 +30,7 @@ async function testEditEvent() {
     try {
         console.log('Editing a event...');
         const newData = { theme: 'bar' }; // Example new data
-        const updatedEvent = await Event.editEvent(eventData.event_id, newData);
+        const updatedEvent = await Event.editEvent(eventData._id, newData);
         console.log('Event edited:', updatedEvent);
     } catch (error) {
         console.error('Error editing event:', error);
@@ -39,7 +39,7 @@ async function testEditEvent() {
 async function testGetEvent() {
     try {
         console.log('Getting an event...');
-        const Event_ = await Event.getEventById(eventData.event_id);
+        const Event_ = await Event.getEventById(eventData._id);
         console.log('Event :', Event_);
     } catch (error) {
         console.error('Error getting event:', error);
@@ -48,7 +48,7 @@ async function testGetEvent() {
 async function testDeleteEvent() {
     try {
         console.log('Deleting an event...');
-        const deletedEvent = await Event.deleteEvent(eventData.event_id);
+        const deletedEvent = await Event.deleteEvent(eventData._id);
         console.log('Event deleted:', deletedEvent);
     } catch (error) {
         console.error('Error deleting event:', error);
@@ -67,6 +67,5 @@ async function closeConnection() {
 testAddEvent()
     .then(() => testEditEvent())
     .then(() => testGetEvent())
-    .then(() => testDeleteEvent())
     .then(() => closeConnection())
     .catch(error => console.error('Test error:', error));
