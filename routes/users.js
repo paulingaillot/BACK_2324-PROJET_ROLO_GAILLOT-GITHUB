@@ -68,14 +68,14 @@ router.get('/:id', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        const { username, pwd } = req.body;
+        const { username, password } = req.body;
         const user = await getUserByUsername(username);
         if (!user) {
             res.status(404).json({ error: 'User not found' });
             return;
         }
         else {
-            const isMatch = await user.comparePassword(pwd);
+            const isMatch = await user.comparePassword(password);
             if (!isMatch) {
                 return res.status(403).json({ message: 'Incorrect password' });
             }
