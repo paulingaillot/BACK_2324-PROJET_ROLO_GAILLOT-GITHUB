@@ -73,6 +73,10 @@ async function deleteUser(user_id) {
 async function getUserByID(user_id) {
     return await User.findOne({ _id: user_id });
 }
+async function getUserByUsername(username) {
+    return await User.findOne({ username: username });
+}
+
 
 async function addToFavourite(user_id,event_id){
     user = await User.findOne(_id = user_id);
@@ -102,6 +106,7 @@ module.exports = {
     editUser: editUser,
     deleteUser: deleteUser,
     getUserByID : getUserByID,
+    getUserByUsername : getUserByUsername,
     addToFavourite: addToFavourite,
     deleteOfFavourite: deleteOfFavourite,
 };

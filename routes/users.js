@@ -68,8 +68,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        const { userId, pwd } = req.body;
-        const user = await getUserByID(userId);
+        const { username, pwd } = req.body;
+        const user = await getUserByUsername(username);
         if (!user) {
             res.status(404).json({ error: 'User not found' });
             return;
