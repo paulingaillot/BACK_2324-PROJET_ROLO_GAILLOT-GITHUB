@@ -66,4 +66,27 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+    try {
+        const { userId, pwd } = req.body;
+        const user = await getUserByID(userId);
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+        else {
+            const isMatch = await user.comparePassword(pwd);
+            if (!isMatch) {
+                return res.status(403).json({ message: 'Incorrect password' });
+            }
+
+            res.status(200).json({ message: 'Login successful', user: user });
+        }
+
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+
 module.exports = router;

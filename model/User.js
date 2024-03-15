@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
     picture: { type: Buffer, required: true },
     password: { type: String, required: true, maxlength: 255 },
     born: { type: Date, required: true },
-    is_admin: { type: Boolean, default: false }
+    is_admin: { type: Boolean, default: false },
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }]
 });
 userSchema.pre('save', async function (next) {
     const user = this;
@@ -52,7 +53,7 @@ async function addUser(userData) {
         mail: mail,
         picture: picture,
         password: password,
-        born: born
+        born: born,
     });
     return await user.save();
 }
@@ -73,11 +74,34 @@ async function getUserByID(user_id) {
     return await User.findOne({ _id: user_id });
 }
 
+async function addToFavourite(user_id,event_id){
+    user = await User.findOne(_id = user_id);
+    if (user.favorites.includes(event_id)) {
+        return { status: 400, message: 'Event is already in favorites' };
+    }
+
+    user.favorites.push(event_id);
+    await user.save();
+    return user;
+}
+
+async function deleteOfFavourite(user_id,event_id){
+    user = await User.findOne(_id = user_id);
+    const index = user.favorites.indexOf(event_id);
+
+    if (index !== -1) {
+        user.favorites.splice(index, 1);
+        await user.save();
+    }
+    return user;
+}
 
 module.exports = {
     User: User,
     addUser: addUser,
     editUser: editUser,
     deleteUser: deleteUser,
-    getUserByID : getUserByID
+    getUserByID : getUserByID,
+    addToFavourite: addToFavourite,
+    deleteOfFavourite: deleteOfFavourite,
 };
