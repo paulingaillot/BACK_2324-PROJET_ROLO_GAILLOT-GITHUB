@@ -39,10 +39,14 @@ async function editEvent(event_id, newData) {
 async function deleteEvent(event_id) {
     return await Event.findOneAndDelete({ event_id: event_id });
 }
+async function getEventById(event_id) {
+    return await Event.findOne({ event_id: event_id });
+}
 
 module.exports = {
     Event: Event,
     addEvent: addEvent,
     editEvent: editEvent,
-    deleteEvent: deleteEvent
+    deleteEvent: deleteEvent,
+    getEventById: getEventById
 };

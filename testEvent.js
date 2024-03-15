@@ -11,7 +11,7 @@ mongoose.connect("mongodb://localhost:27017/isen", {
 const eventData = {
     event_id: 1,
     image : Buffer.from('example_picture_data'),
-    theme: 'Sexe',
+    theme: 'event',
     prix: 15,
     date: new Date('1990-01-01')
 };
@@ -36,7 +36,15 @@ async function testEditEvent() {
         console.error('Error editing event:', error);
     }
 }
-
+async function testGetEvent() {
+    try {
+        console.log('Getting an event...');
+        const Event_ = await Event.getEventById(eventData.event_id);
+        console.log('Event :', Event_);
+    } catch (error) {
+        console.error('Error getting event:', error);
+    }
+}
 async function testDeleteEvent() {
     try {
         console.log('Deleting an event...');
@@ -46,6 +54,7 @@ async function testDeleteEvent() {
         console.error('Error deleting event:', error);
     }
 }
+
 async function closeConnection() {
     try {
         await mongoose.connection.close();
@@ -57,6 +66,7 @@ async function closeConnection() {
 // Run the test functions
 testAddEvent()
     .then(() => testEditEvent())
+    .then(() => testGetEvent())
     .then(() => testDeleteEvent())
     .then(() => closeConnection())
     .catch(error => console.error('Test error:', error));

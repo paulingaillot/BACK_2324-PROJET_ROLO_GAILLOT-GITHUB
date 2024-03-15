@@ -60,9 +60,15 @@ async function deleteUser(user_id) {
     return await User.findOneAndDelete({ user_id: user_id });
 }
 
+async function getUserByID(user_id) {
+    return await User.findOne({ user_id: user_id });
+}
+
+
 module.exports = {
     User: User,
     addUser: addUser,
     editUser: editUser,
-    deleteUser: deleteUser
+    deleteUser: deleteUser,
+    getUserByID : getUserByID
 };

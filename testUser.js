@@ -40,6 +40,15 @@ async function testEditUser() {
     }
 }
 
+async function testGetUser() {
+    try {
+        console.log('Getting a user...');
+        const getUser = await User.getUserByID(userData.user_id);
+        console.log('User get:', getUser);
+    } catch (error) {
+        console.error('Error getting user:', error);
+    }
+}
 async function testDeleteUser() {
     try {
         console.log('Deleting a user...');
@@ -80,6 +89,7 @@ async function testLogin() {
 testAddUser()
     .then(()=> testLogin())
     .then(() => testEditUser())
+    .then(() => testGetUser())
     .then(() => testDeleteUser())
     .then(() => closeConnection())
     .catch(error => console.error('Test error:', error));
