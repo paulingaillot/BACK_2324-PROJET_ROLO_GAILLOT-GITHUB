@@ -6,13 +6,25 @@ const { User, addUser, editUser, deleteUser, getUserByID } = require('../model/u
 router.use(express.json());
 
 // Route pour ajouter un utilisateur
-router.post('/', async (req, res) => {
+router.post('/addUser', async (req, res) => {
     try {
-        const { user_id, picture, password, born } = req.body;
-        const newUser = await addUser(user_id, picture, password, born);
+        // Récupérer les données JSON de la requête
+        const userData = req.body;
+
+        // Vérifier si toutes les clés requises sont présentes dans les données JSON
+        const requiredKeys = ['name', 'username', 'surname', 'picture', 'password', 'born'];
+        for (const key of requiredKeys) {
+            if (!(key in userData)) {
+                return res.status(400).json({ error: `Missing required key: ${key}` });
+            }
+        }
+
+        // Ajouter l'utilisateur en utilisant les données JSON fournies
+        const newUser = await User.addUser(userData);
         res.status(201).json(newUser);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        console.error('Error adding user:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 

@@ -13,15 +13,17 @@ mongoose.connect("mongodb://localhost:27017/isen", {
     .catch(error => console.error('Error connecting to MongoDB:', error));
 
 let userData = {
+    name: "John",
+    username: "john123",
+    surname: "Doe",
     picture: Buffer.from('example_picture_data'),
-    password: 'example_password',
-    born: new Date('1990-01-01')
+    password: "password123",
+    born: new Date("1990-01-01")
 };
-
 async function testAddUser() {
     try {
         console.log('Adding a user...');
-        const newUser = await User.addUser(userData.picture, userData.password, userData.born);
+        const newUser = await User.addUser(userData);
         userData = newUser;
         console.log('User added:', newUser);
     } catch (error) {

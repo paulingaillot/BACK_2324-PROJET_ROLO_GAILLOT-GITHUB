@@ -12,6 +12,9 @@ mongoose.connect("mongodb://localhost:27017/isen", {
     .catch(error => console.error('Error connecting to MongoDB:', error));
 
 const userSchema = new mongoose.Schema({
+    name: {type: String, required:true},
+    surname: {type: String, required:true},
+    username: {type: String, required:true},
     picture: { type: Buffer, required: true },
     password: { type: String, required: true, maxlength: 255 },
     born: { type: Date, required: true }
@@ -38,14 +41,19 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 };
 const User = mongoose.model('User', userSchema);
 
-async function addUser( picture, password, born) {
+async function addUser(userData) {
+    const { name, username, surname, picture, password, born } = userData;
     const user = new User({
+        username: username,
+        name: name,
+        surname: surname,
         picture: picture,
         password: password,
         born: born
     });
     return await user.save();
 }
+
 
 async function editUser(user_id, newData) {
     if (newData.password) {
