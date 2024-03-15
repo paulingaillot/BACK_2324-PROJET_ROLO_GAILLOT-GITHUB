@@ -43,10 +43,15 @@ async function getEventById(event_id) {
     return await Event.findOne({ event_id: event_id });
 }
 
+async function getAllEvent(){
+    return await Event.find();
+}
+
 module.exports = {
     Event: Event,
     addEvent: addEvent,
     editEvent: editEvent,
     deleteEvent: deleteEvent,
-    getEventById: getEventById
+    getEventById: getEventById,
+    getAllEvent: getAllEvent
 };

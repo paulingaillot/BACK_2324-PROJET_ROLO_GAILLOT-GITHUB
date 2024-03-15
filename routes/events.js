@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Event, addEvent, editEvent, deleteEvent, getEventById } = require('./eventFunctions');
+const {getAllEvent} = require("../model/Event");
 
 // Middleware pour parser le corps des requêtes en JSON
 router.use(express.json());
@@ -54,4 +55,17 @@ router.get('/events/:id', async (req, res) => {
     }
 });
 
+router.get('/events', async (req, res) => {
+    try {
+
+        const event = await getAllEvent();
+        if (!event) {
+            res.status(404).json({ error: 'Events not found' });
+            return;
+        }
+        res.json(event);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
 module.exports = router;
