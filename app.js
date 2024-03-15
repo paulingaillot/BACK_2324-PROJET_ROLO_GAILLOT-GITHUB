@@ -5,6 +5,9 @@ const path = require('path');
 const PORT = 3000;
 const app = express();
 const router = require('./routes/index');
+const usersRouter = require('./routes/users');
+const eventsRouter = require('./routes/events');
+
 
 // const { MongoClient } = require('mongodb');
 
@@ -17,6 +20,8 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use('/',router);
+app.use('/events',eventsRouter);
+app.use('/users',usersRouter);
 
 // mongoose.connect(url, {
 //     useNewUrlParser: true,
