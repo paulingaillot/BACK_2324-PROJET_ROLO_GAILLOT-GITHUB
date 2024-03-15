@@ -12,8 +12,7 @@ mongoose.connect("mongodb://localhost:27017/isen", {
     .then(() => console.log('Connected to MongoDB'))
     .catch(error => console.error('Error connecting to MongoDB:', error));
 
-const userData = {
-    user_id: 1,
+let userData = {
     picture: Buffer.from('example_picture_data'),
     password: 'example_password',
     born: new Date('1990-01-01')
@@ -22,7 +21,8 @@ const userData = {
 async function testAddUser() {
     try {
         console.log('Adding a user...');
-        const newUser = await User.addUser(userData.user_id, userData.picture, userData.password, userData.born);
+        const newUser = await User.addUser(userData.picture, userData.password, userData.born);
+        userData = newUser;
         console.log('User added:', newUser);
     } catch (error) {
         console.error('Error adding user:', error);
@@ -33,7 +33,7 @@ async function testEditUser() {
     try {
         console.log('Editing a user...');
         const newData = { password: 'new_password' }; // Example new data
-        const updatedUser = await User.editUser(userData.user_id, newData);
+        const updatedUser = await User.editUser(userData._id, newData);
         console.log('User edited:', updatedUser);
     } catch (error) {
         console.error('Error editing user:', error);
@@ -43,7 +43,7 @@ async function testEditUser() {
 async function testGetUser() {
     try {
         console.log('Getting a user...');
-        const getUser = await User.getUserByID(userData.user_id);
+        const getUser = await User.getUserByID(userData._id);
         console.log('User get:', getUser);
     } catch (error) {
         console.error('Error getting user:', error);
@@ -52,7 +52,7 @@ async function testGetUser() {
 async function testDeleteUser() {
     try {
         console.log('Deleting a user...');
-        const deletedUser = await User.deleteUser(userData.user_id);
+        const deletedUser = await User.deleteUser(userData._id);
         console.log('User deleted:', deletedUser);
     } catch (error) {
         console.error('Error deleting user:', error);
@@ -70,7 +70,7 @@ async function closeConnection() {
 async function testLogin() {
     try {
         console.log('Simulating login...');
-        const user = await User.User.findOne({ user_id: userData.user_id });
+        const user = await User.User.findOne({ _id: userData._id });
         if (!user) {
             console.log('User not found');
             return;

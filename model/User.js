@@ -12,7 +12,6 @@ mongoose.connect("mongodb://localhost:27017/isen", {
     .catch(error => console.error('Error connecting to MongoDB:', error));
 
 const userSchema = new mongoose.Schema({
-    user_id: { type: Number, required: true },
     picture: { type: Buffer, required: true },
     password: { type: String, required: true, maxlength: 255 },
     born: { type: Date, required: true }
@@ -39,9 +38,8 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 };
 const User = mongoose.model('User', userSchema);
 
-async function addUser(user_id, picture, password, born) {
+async function addUser( picture, password, born) {
     const user = new User({
-        user_id: user_id,
         picture: picture,
         password: password,
         born: born
@@ -53,15 +51,15 @@ async function editUser(user_id, newData) {
     if (newData.password) {
         newData.password = await bcrypt.hash(newData.password, 10);
     }
-    return await User.findOneAndUpdate({ user_id: user_id }, newData, { new: true });
+    return await User.findOneAndUpdate({ _id: user_id }, newData, { new: true });
 }
 
 async function deleteUser(user_id) {
-    return await User.findOneAndDelete({ user_id: user_id });
+    return await User.findOneAndDelete({ _id: user_id });
 }
 
 async function getUserByID(user_id) {
-    return await User.findOne({ user_id: user_id });
+    return await User.findOne({ _id: user_id });
 }
 
 
