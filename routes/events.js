@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Event, addEvent, editEvent, deleteEvent, getEventById } = require('./eventFunctions');
-const {getAllEvent} = require("../model/Event");
+const { Event, addEvent, editEvent, deleteEvent, getEventById, getAllEvent } = require('../model/event');
+
 
 // Middleware pour parser le corps des requêtes en JSON
 router.use(express.json());
