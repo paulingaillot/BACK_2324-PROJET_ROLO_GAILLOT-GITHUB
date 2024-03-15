@@ -6,7 +6,7 @@ const { User, addUser, editUser, deleteUser, getUserByID } = require('../model/u
 router.use(express.json());
 
 // Route pour ajouter un utilisateur
-router.post('/users', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const { user_id, picture, password, born } = req.body;
         const newUser = await addUser(user_id, picture, password, born);
@@ -17,7 +17,7 @@ router.post('/users', async (req, res) => {
 });
 
 // Route pour modifier un utilisateur
-router.put('/users/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         const newData = req.body;
@@ -29,7 +29,7 @@ router.put('/users/:id', async (req, res) => {
 });
 
 // Route pour supprimer un utilisateur
-router.delete('/users/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         await deleteUser(userId);
@@ -40,7 +40,7 @@ router.delete('/users/:id', async (req, res) => {
 });
 
 // Route pour obtenir un utilisateur par son ID
-router.get('/users/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         const user = await getUserByID(userId);
