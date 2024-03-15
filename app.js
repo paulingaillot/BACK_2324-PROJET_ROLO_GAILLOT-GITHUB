@@ -1,6 +1,7 @@
 // require('dotenv').config()
 const express = require('express');
 const path = require('path');
+var cors = require('cors')
 
 const PORT = 3000;
 const app = express();
@@ -8,6 +9,7 @@ const router = require('./routes/index');
 const usersRouter = require('./routes/users');
 const eventsRouter = require('./routes/events');
 
+app.use(cors())
 
 // const { MongoClient } = require('mongodb');
 
