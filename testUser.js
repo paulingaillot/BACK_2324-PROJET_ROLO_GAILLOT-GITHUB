@@ -16,6 +16,7 @@ let userData = {
     name: "John",
     username: "john123",
     surname: "Doe",
+    mail: "abc@gmail.com",
     picture: Buffer.from('example_picture_data'),
     password: "password123",
     born: new Date("1990-01-01")

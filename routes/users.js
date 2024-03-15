@@ -12,7 +12,7 @@ router.post('/addUser', async (req, res) => {
         const userData = req.body;
 
         // Vérifier si toutes les clés requises sont présentes dans les données JSON
-        const requiredKeys = ['name', 'username', 'surname', 'picture', 'password', 'born'];
+        const requiredKeys = ['name', 'username', 'surname', 'mail', 'picture', 'password', 'born'];
         for (const key of requiredKeys) {
             if (!(key in userData)) {
                 return res.status(400).json({ error: `Missing required key: ${key}` });
@@ -20,7 +20,7 @@ router.post('/addUser', async (req, res) => {
         }
 
         // Ajouter l'utilisateur en utilisant les données JSON fournies
-        const newUser = await User.addUser(userData);
+        const newUser = await addUser(userData);
         res.status(201).json(newUser);
     } catch (error) {
         console.error('Error adding user:', error);

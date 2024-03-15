@@ -17,6 +17,7 @@ async function runTests() {
             name: "Johnqssxcsevzegc",
             username: "john1234",
             surname: "Doe",
+            mail: "abc2@gmail.com",
             picture: Buffer.from('example_picture_data'),
             password: "password123",
             born: new Date("1990-01-01")
@@ -25,6 +26,7 @@ async function runTests() {
             name: "Johnqsc",
             username: "john123",
             surname: "Doe",
+            mail: "abc3@gmail.com",
             picture: Buffer.from('example_picture_data'),
             password: "password123",
             born: new Date("1990-01-01")

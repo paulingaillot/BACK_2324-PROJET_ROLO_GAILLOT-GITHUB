@@ -9,8 +9,15 @@ router.use(express.json());
 // Route pour ajouter un événement
 router.post('/', async (req, res) => {
     try {
-        const { event_id, image, theme, prix, date } = req.body;
-        const newEvent = await addEvent(event_id, image, theme, prix, date);
+        const eventData = req.body;
+        const requiredKeys = [ 'creator', 'name', 'image', 'theme', 'prix', 'date' ];
+        for (const key of requiredKeys) {
+            if (!(key in eventData)) {
+                return res.status(400).json({ error: `Missing required key: ${key}` });
+            }
+        }
+
+        const newEvent = await addEvent(eventData);
         res.status(201).json(newEvent);
     } catch (error) {
         res.status(400).json({ error: error.message });

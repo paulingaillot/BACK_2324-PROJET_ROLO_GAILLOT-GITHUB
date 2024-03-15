@@ -15,9 +15,11 @@ const userSchema = new mongoose.Schema({
     name: {type: String, required:true},
     surname: {type: String, required:true},
     username: {type: String, required:true},
+    mail: {type:String, required:true},
     picture: { type: Buffer, required: true },
     password: { type: String, required: true, maxlength: 255 },
-    born: { type: Date, required: true }
+    born: { type: Date, required: true },
+    is_admin: { type: Boolean, default: false }
 });
 userSchema.pre('save', async function (next) {
     const user = this;
@@ -42,11 +44,12 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 const User = mongoose.model('User', userSchema);
 
 async function addUser(userData) {
-    const { name, username, surname, picture, password, born } = userData;
+    const { name, username, surname, mail, picture, password, born } = userData;
     const user = new User({
         username: username,
         name: name,
         surname: surname,
+        mail: mail,
         picture: picture,
         password: password,
         born: born

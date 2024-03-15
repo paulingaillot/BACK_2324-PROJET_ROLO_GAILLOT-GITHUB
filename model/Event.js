@@ -12,6 +12,8 @@ mongoose.connect("mongodb://localhost:27017/isen", {
     .catch(error => console.error('Error connecting to MongoDB:', error));
 
 const eventSchema = new mongoose.Schema({
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    name: {type: String, required:true},
     image: { type: Buffer, required: true },
     theme: { type: String, required: true, maxlength: 255 },
     prix: { type: Number, required: true },
@@ -20,8 +22,11 @@ const eventSchema = new mongoose.Schema({
 
 const Event = mongoose.model('Event', eventSchema);
 
-async function addEvent(image, theme, prix, date) {
+async function addEvent(eventData) {
+    const { creator, name, image, theme, prix, date } = eventData;
     const event = new Event({
+        creator: creator,
+        name: name,
         image: image,
         theme: theme,
         prix: prix,
