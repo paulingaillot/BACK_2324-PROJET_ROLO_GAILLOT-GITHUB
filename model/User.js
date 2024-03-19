@@ -61,8 +61,9 @@ async function addUser(userData) {
             password: password,
             born: born,
         });
+        
         await user.save();
-        return user;
+        return user.toObject;
     } catch (error) {
         return { error: 'Failed to add user' }; // Return a generic error message
     }
@@ -82,7 +83,8 @@ async function deleteUser(user_id) {
 }
 
 async function getUserByID(user_id) {
-    return await User.findOne({ _id: user_id });
+    const user = await User.findOne({ _id: user_id });
+    return user.toObject();
 }
 async function getUserByUsername(username) {
     return await User.findOne({ username: username });
