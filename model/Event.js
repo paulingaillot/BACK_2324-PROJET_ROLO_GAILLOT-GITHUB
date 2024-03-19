@@ -53,12 +53,75 @@ async function getAllEvent() {
         return eventObj;
     });
 }
+async function filterByName(eventName) {
+    const events = await Event.find({ name: { $regex: new RegExp(eventName, 'i') } });
+    return events.map(event => {
+        const eventObj = event.toObject();
+        return eventObj;
+    });
+}
 
+async function filterByPriceRange(minPrice, maxPrice) {
+    const events = await Event.find({ prix: { $gte: minPrice, $lte: maxPrice } });
+    return events.map(event => {
+        const eventObj = event.toObject();
+        return eventObj;
+    });
+
+}
+
+async function filterByTheme(theme) {
+    const events = await Event.find({ theme: { $regex: new RegExp(theme, 'i') } });
+    return events.map(event => {
+        const eventObj = event.toObject();
+        return eventObj;
+    });
+}
+
+async function sortByPriceAscending() {
+    const events = await Event.find().sort({ prix: 1 });
+    return events.map(event => {
+        const eventObj = event.toObject();
+        return eventObj;
+    });
+}
+
+async function sortByPriceDescending() {
+    const events = await  Event.find().sort({ prix: -1 });
+    return events.map(event => {
+        const eventObj = event.toObject();
+        return eventObj;
+    });
+}
+
+async function sortByDateAscending() {
+    const events = await  Event.find().sort({ date: 1 });
+    return events.map(event => {
+        const eventObj = event.toObject();
+        return eventObj;
+    });
+}
+
+async function sortByDateDescending() {
+    const events = await  Event.find().sort({ date: -1 });
+    return events.map(event => {
+        const eventObj = event.toObject();
+        return eventObj;
+    });
+}
 module.exports = {
     Event: Event,
     addEvent: addEvent,
     editEvent: editEvent,
     deleteEvent: deleteEvent,
     getEventById: getEventById,
-    getAllEvent: getAllEvent
+    getAllEvent: getAllEvent,
+    filterByName: filterByName,
+    filterByTheme: filterByTheme,
+    filterByPriceRange: filterByPriceRange,
+    sortByPriceDescending: sortByPriceDescending,
+    sortByPriceAscending:sortByPriceAscending,
+    sortByDateDescending: sortByDateDescending,
+    sortByDateAscending: sortByDateAscending,
+
 };
