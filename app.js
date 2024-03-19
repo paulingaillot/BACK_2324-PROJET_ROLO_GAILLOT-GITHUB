@@ -1,11 +1,12 @@
-// require('dotenv').config()
 const express = require('express');
-const path = require('path');
-var cors = require('cors')
+const path = require("path");
+const http = require('http');
+const {Server} = require("socket.io");
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
-const PORT = 3000;
 const app = express();
+
 const router = require('./routes/index');
 const usersRouter = require('./routes/users');
 const eventsRouter = require('./routes/events');
@@ -29,14 +30,44 @@ app.use('/',router);
 app.use('/events',eventsRouter);
 app.use('/users',usersRouter);
 
-// mongoose.connect(url, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// })
-//     .then(() => console.log('Connected to MongoDB'))
-//     .catch(error => console.error('Error connecting to MongoDB:', error));
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:4200",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true
+    }
+  });
+const port = 3000;
+
+app.use('/', express.static(path.join(__dirname, "client"), {index: "index.html"}));
+
+let users = {};
+io.on('connection', (socket) => {
+  // Store user's id and socket
+  users[socket.handshake.query.username] = socket;
+
+  // Send the list of users every 30 seconds
+  setInterval(() => {
+    io.emit('users', Object.keys(users));
+    console.log("Liste des users envoyé")
+  }, 30000);
+
+  socket.on('private message', (toId, message) => {
+    if (users[toId]) {
+      users[toId].emit('private message', message);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    delete users[socket.handshake.query.username];
+  });
+
 });
 
-//abcdef
+
+
+server.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
