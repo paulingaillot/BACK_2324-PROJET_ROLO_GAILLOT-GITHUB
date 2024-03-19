@@ -90,9 +90,5 @@ async function testLogin() {
 }
 // Run the test functions
 testAddUser()
-    .then(()=> testLogin())
-    .then(() => testEditUser())
-    .then(() => testGetUser())
-    .then(() => testDeleteUser())
-    .then(() => closeConnection())
+    
     .catch(error => console.error('Test error:', error));

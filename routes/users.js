@@ -70,6 +70,7 @@ router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await getUserByUsername(username);
+        console.log(user);
         if (!user) {
             res.status(404).json({ error: 'User not found' });
             return;
@@ -84,6 +85,7 @@ router.post('/login', async (req, res) => {
         }
 
     } catch (error) {
+        console.error('Error during login:', error);
         res.status(400).json({ error: error.message });
     }
 });

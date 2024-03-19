@@ -51,7 +51,7 @@ async function addUser(userData) {
         name: name,
         surname: surname,
         mail: mail,
-        picture: picture,
+        picture: Buffer.from(picture),
         password: password,
         born: born,
     });

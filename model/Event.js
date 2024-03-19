@@ -27,7 +27,7 @@ async function addEvent(eventData) {
     const event = new Event({
         creator: creator,
         name: name,
-        image: image,
+        image: Buffer.from(image),
         theme: theme,
         prix: prix,
         date: date,
