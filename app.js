@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 var cors = require('cors')
+const bodyParser = require('body-parser');
 
 const PORT = 3000;
 const app = express();
@@ -17,6 +18,9 @@ app.use(cors())
 // const url = args[0] ?? process.env.CONNECTION_MONGO_STR;
 // const dbName = args[1] ?? "backend2324";
 // const client = new MongoClient(url);
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

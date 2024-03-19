@@ -46,8 +46,12 @@ async function getEventById(event_id) {
     return await Event.findOne({ _id: event_id });
 }
 
-async function getAllEvent(){
-    return await Event.find();
+async function getAllEvent() {
+    const events = await Event.find();
+    return events.map(event => {
+        const eventObj = event.toObject();
+        return eventObj;
+    });
 }
 
 module.exports = {
