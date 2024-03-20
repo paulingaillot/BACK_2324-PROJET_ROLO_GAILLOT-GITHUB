@@ -1,39 +1,26 @@
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-    sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    sender: {type: String, required: true },
     content: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now },
-    conversation: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation', required: true }
+    timestamp: { type: Date, default: Date.now, required: true }
 });
 
 const MessageModel = mongoose.model('Message', messageSchema);
 
 class Message {
-    static async save(sender, receiver, content, conversation) {
+    static async createMessage(sender, content) {
         const message = new MessageModel({
             sender: sender,
-            receiver: receiver,
-            content: content,
-            conversation: conversation
+            content: content
         });
         return await message.save();
     }
 
-    static async findByConversation(conversationId) {
-        return await MessageModel.find({ conversation: conversationId });
-    }
-    static async findByConversationAndUser(conversationId, userId) {
-        let messages = await MessageModel.find({ conversation: conversationId });
-
-        messages = messages.filter(message =>
-            message.sender.equals(userId) || message.receiver.equals(userId)
-        );
-
-
-
-        return messages;
+    static async getMessagesFromIds(messageIds) {
+        return await MessageModel.find({
+            '_id': { $in: messageIds }
+        });
     }
 }
 

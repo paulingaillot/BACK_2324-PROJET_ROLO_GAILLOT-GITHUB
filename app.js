@@ -10,6 +10,10 @@ const app = express();
 const router = require('./routes/index');
 const usersRouter = require('./routes/users');
 const eventsRouter = require('./routes/events');
+const tchatRouter = require('./routes/tchat');
+const { ConversationModel, findByChannel, createChannel, addMessageToChannel} = require('./model/Conversation');
+const { createMessage } = require('./model/Message');
+
 
 app.use(cors())
 
@@ -26,9 +30,11 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
+
 app.use('/',router);
 app.use('/events',eventsRouter);
 app.use('/users',usersRouter);
+app.use('/tchat',tchatRouter);
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -54,10 +60,23 @@ io.on('connection', (socket) => {
     console.log("Liste des users envoyé")
   }, 30000);
 
-  socket.on('private message', (toId, message) => {
-    if (users[toId]) {
-      users[toId].emit('private message', message);
-    }
+  socket.on('join room', (room) => {
+    socket.join(room);
+  });
+
+  socket.on('leave room', (room) => {
+    socket.leave(room);
+  });
+
+  socket.on('message', async (room, message) => {
+      io.to(room).emit('message', { from: socket.handshake.query.username, message });
+
+      // Find the conversation
+      let conversation = await findByChannel(room);
+      if(conversation === null)  createChannel(room);
+
+      var mess = await createMessage(socket.handshake.query.username, message);
+      addMessageToChannel(mess._id, room);
   });
 
   socket.on('disconnect', () => {
