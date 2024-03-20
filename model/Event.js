@@ -43,11 +43,13 @@ async function deleteEvent(event_id) {
     return await Event.findOneAndDelete({ _id: event_id });
 }
 async function getEventById(event_id) {
-    return await Event.findOne({ _id: event_id });
+    let events = await  Event.findOne({ _id: event_id });
+    events = events.toObject();
+    return events;
 }
 
 async function getAllEvent() {
-    const events = await Event.find();
+    const events = await Event.find().sort({ date: 1 });;
     return events.map(event => {
         const eventObj = event.toObject();
         return eventObj;

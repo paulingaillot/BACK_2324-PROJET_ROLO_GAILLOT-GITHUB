@@ -86,10 +86,10 @@ async function getUserByID(user_id) {
     const user = await User.findOne({ _id: user_id });
     return user.toObject();
 }
+
 async function getUserByUsername(username) {
     return await User.findOne({ username: username });
 }
-
 
 async function addToFavourite(user_id,event_id){
     user = await User.findOne(_id = user_id);
