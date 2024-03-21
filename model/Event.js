@@ -4,12 +4,6 @@ const { MongoClient, Double} = require('mongodb');
 
 const args = process.argv.slice(2);
 const url = args[0] ?? process.env.CONNECTION_MONGO_STR;
-mongoose.connect("mongodb://localhost:27017/isen", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(error => console.error('Error connecting to MongoDB:', error));
 
 const eventSchema = new mongoose.Schema({
     creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

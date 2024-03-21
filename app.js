@@ -10,6 +10,8 @@ const app = express();
 const router = require('./routes/index');
 const usersRouter = require('./routes/users');
 const eventsRouter = require('./routes/events');
+const favoriteRouter = require('./routes/favorite')
+const mongoose = require("mongoose");
 
 app.use(cors())
 
@@ -29,6 +31,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/',router);
 app.use('/events',eventsRouter);
 app.use('/users',usersRouter);
+app.use('/favorites',favoriteRouter);
+mongoose.connect("mongodb://localhost:27017/isen", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(error => console.error('Error connecting to MongoDB:', error));
 
 const server = http.createServer(app);
 const io = new Server(server, {
