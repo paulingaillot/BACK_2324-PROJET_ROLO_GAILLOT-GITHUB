@@ -72,6 +72,19 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/userPicture/:username', async (req, res) => {
+    try {
+    const  username  = req.params.username;
+    var user = await getUserByUsername(username);
+    var image = user.toObject().picture;
+    res.status(200).json({user: image});
+
+    }catch (error) {
+        console.error('Error during login:', error);
+        res.status(400).json({ error: error.message });
+    }
+})
+
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;

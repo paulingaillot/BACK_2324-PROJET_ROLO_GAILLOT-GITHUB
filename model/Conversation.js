@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 
 const conversationSchema = new mongoose.Schema({
-    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
+    channel: {type: String, required:true},
     messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }]
 });
 
 const ConversationModel = mongoose.model('Conversation', conversationSchema);
 
 class Conversation {
-    static async save(participants) {
+    static async createChannel(channel) {
         const conversation = new ConversationModel({
-            participants: participants
+            channel: channel
         });
         return await conversation.save();
     }
@@ -19,9 +19,23 @@ class Conversation {
         return await ConversationModel.findById(id).populate('messages');
     }
 
-    static async findByParticipants(participants) {
-        return await ConversationModel.findOne({ participants: { $all: participants } }).populate('messages');
+    static async findByChannel(channel) {
+        return await ConversationModel.findOne({ channel : channel }).populate('messages');
+    }
+
+    static async addMessageToChannel(mess_id, room) {
+        let conversation = await ConversationModel.findOne({ channel : room });
+
+        if (!conversation) {
+            throw new Error('Conversation not found');
+        }
+    
+        conversation.messages.push(mess_id);
+        await conversation.save();
+    
+        return conversation;
     }
 }
+
 
 module.exports = Conversation;
