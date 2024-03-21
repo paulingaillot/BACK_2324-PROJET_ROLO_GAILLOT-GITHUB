@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, addUser, editUser, deleteUser, getUserByID, getUserByUsername, getUsers } = require('../model/user');
+const { User, addUser, editUser, deleteUser, getUserByID, getUserByUsername, getUsers } = require('../model/User');
 
 // Middleware pour parser le corps des requêtes en JSON
 router.use(express.json());

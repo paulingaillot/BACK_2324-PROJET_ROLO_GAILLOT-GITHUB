@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Event, addEvent, editEvent, deleteEvent, getEventById, getAllEvent, filterByName, filterByPriceRange, filterByTheme, sortByPriceAscending, sortByPriceDescending, sortByDateAscending, sortByDateDescending } = require('../model/event');
+const { Event, addEvent, editEvent, deleteEvent, getEventById, getAllEvent, filterByName, filterByPriceRange, filterByTheme, sortByPriceAscending, sortByPriceDescending, sortByDateAscending, sortByDateDescending } = require('../model/Event');
 
 // Middleware pour parser le corps des requêtes en JSON
 router.use(express.json());
