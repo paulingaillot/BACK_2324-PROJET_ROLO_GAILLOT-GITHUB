@@ -8,7 +8,6 @@ const cors = require('cors');
 
 const app = express();
 
-const router = require('./routes/index');
 const usersRouter = require('./routes/users');
 const eventsRouter = require('./routes/events');
 const favoriteRouter = require('./routes/favorite')
@@ -30,11 +29,7 @@ const dbName = args[1] ?? "backend2324";
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
 
-
-app.use('/',router);
 app.use('/events',eventsRouter);
 app.use('/users',usersRouter);
 app.use('/favorites',favoriteRouter);
