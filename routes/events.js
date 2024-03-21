@@ -29,6 +29,7 @@ router.put('/:id', async (req, res) => {
         const eventId = req.params.id;
         const newData = req.body;
         const updatedEvent = await editEvent(eventId, newData);
+        console.log(updatedEvent);
         res.json(updatedEvent);
     } catch (error) {
         res.status(400).json({ error: error.message });

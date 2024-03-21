@@ -30,7 +30,9 @@ async function addEvent(eventData) {
 }
 
 async function editEvent(event_id, newData) {
-    return await Event.findOneAndUpdate({ _id: event_id }, newData, { new: true });
+    let events =  await Event.findOneAndUpdate({ _id: event_id }, newData, { new: true });
+    events = events.toObject();
+    return events;
 }
 
 async function deleteEvent(event_id) {

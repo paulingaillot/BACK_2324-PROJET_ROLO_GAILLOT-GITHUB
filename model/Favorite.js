@@ -57,11 +57,21 @@ async function add(userId, eventId) {
 }
 
  async function deleteFav(userId, eventId) {
-    try {
-        return await Favorite.deleteOne({ users: userId, event: eventId });
-    } catch (error) {
-        throw new Error('Erreur lors de la suppression du favori.');
-    }
+     try {
+         const favorite = await Favorite.findOne({ event: eventId });
+
+         if (favorite) {
+             favorite.users = favorite.users.filter(id => id.toString() !== userId.toString());
+
+             await favorite.save();
+
+             return favorite;
+         } else {
+             return null;
+         }
+     } catch (error) {
+         throw new Error('Erreur lors de la suppression du favori.');
+     }
 }
 
 

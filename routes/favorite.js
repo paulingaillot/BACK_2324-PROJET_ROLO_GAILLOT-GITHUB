@@ -47,6 +47,7 @@ router.post('/', async (req, res) => {
 // Delete a favorite
 router.delete('/', async (req, res) => {
     try {
+        console.log(req.body);
         const { userId, eventId } = req.body;
         await deleteFav(userId, eventId);
         res.json({ message: 'Favorite deleted successfully' });
