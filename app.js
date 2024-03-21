@@ -54,12 +54,6 @@ io.on('connection', (socket) => {
   // Store user's id and socket
   users[socket.handshake.query.username] = socket;
 
-  // Send the list of users every 30 seconds
-  setInterval(() => {
-    io.emit('users', Object.keys(users));
-    console.log("Liste des users envoyé")
-  }, 30000);
-
   socket.on('join room', (room) => {
     socket.join(room);
   });

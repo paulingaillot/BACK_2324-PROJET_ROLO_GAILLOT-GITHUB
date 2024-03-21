@@ -91,6 +91,13 @@ async function getUserByUsername(username) {
     return await User.findOne({ username: username });
 }
 
+async function getUsers() {
+    var users=  await User.find({}, 'username picture');
+    return users.map(user => {
+        const userObj = user.toObject();
+        return userObj;
+    });
+}
 async function addToFavourite(user_id,event_id){
     user = await User.findOne(_id = user_id);
     if (user.favorites.includes(event_id)) {
@@ -122,4 +129,5 @@ module.exports = {
     getUserByUsername : getUserByUsername,
     addToFavourite: addToFavourite,
     deleteOfFavourite: deleteOfFavourite,
+    getUsers: getUsers
 };

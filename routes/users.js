@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, addUser, editUser, deleteUser, getUserByID, getUserByUsername } = require('../model/user');
+const { User, addUser, editUser, deleteUser, getUserByID, getUserByUsername, getUsers } = require('../model/user');
 
 // Middleware pour parser le corps des requêtes en JSON
 router.use(express.json());
@@ -33,6 +33,17 @@ router.post('/addUser', async (req, res) => {
     }
 });
 
+
+router.get('/all', async (req, res) => {
+    try {
+    var user = await getUsers();
+    res.status(200).json(user);
+
+    }catch (error) {
+        console.error('Error during login:', error);
+        res.status(400).json({ error: error.message });
+    }
+})
 
 // Route pour modifier un utilisateur
 router.put('/:id', async (req, res) => {
@@ -71,6 +82,7 @@ router.get('/:id', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
 
 router.get('/userPicture/:username', async (req, res) => {
     try {
