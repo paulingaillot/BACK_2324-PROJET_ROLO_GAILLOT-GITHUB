@@ -57,7 +57,7 @@ async function addUser(userData) {
         });
         
         await user.save();
-        return user.toObject;
+        return user.toObject();
     } catch (error) {
         return { error: 'Failed to add user' }; // Return a generic error message
     }
@@ -92,11 +92,6 @@ async function getUsers() {
         return userObj;
     });
 }
-async function addToFavourite(user_id,event_id){
-    user = await User.findOne(_id = user_id);
-    if (user.favorites.includes(event_id)) {
-        return { status: 400, message: 'Event is already in favorites' };
-    }
 
 
 module.exports = {
@@ -106,7 +101,5 @@ module.exports = {
     deleteUser: deleteUser,
     getUserByID : getUserByID,
     getUserByUsername : getUserByUsername,
-    addToFavourite: addToFavourite,
-    deleteOfFavourite: deleteOfFavourite,
     getUsers: getUsers
 };

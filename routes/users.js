@@ -10,7 +10,7 @@ router.post('/addUser', async (req, res) => {
     try {
         // Récupérer les données JSON de la requête
         const userData = req.body;
-
+        console.log(userData)
         // Vérifier si toutes les clés requises sont présentes dans les données JSON
         const requiredKeys = ['name', 'username', 'surname', 'mail', 'picture', 'password', 'born'];
         for (const key of requiredKeys) {
@@ -51,7 +51,7 @@ router.put('/:id', async (req, res) => {
         const userId = req.params.id;
         const newData = req.body;
         const updatedUser = await editUser(userId, newData);
-        res.json(updatedUser);
+        res.json(updatedUser.toObject());
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
