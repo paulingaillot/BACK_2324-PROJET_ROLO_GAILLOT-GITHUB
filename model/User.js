@@ -4,12 +4,6 @@ const { MongoClient } = require('mongodb');
 const bcrypt = require('bcrypt');
 const args = process.argv.slice(2);
 const url = args[0] ?? process.env.CONNECTION_MONGO_STR;
-mongoose.connect("mongodb://localhost:27017/isen", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(error => console.error('Error connecting to MongoDB:', error));
 
 const userSchema = new mongoose.Schema({
     name: {type: String, required:true},
@@ -19,8 +13,8 @@ const userSchema = new mongoose.Schema({
     picture: { type: Buffer, required: true },
     password: { type: String, required: true, maxlength: 255 },
     born: { type: Date, required: true },
-    is_admin: { type: Boolean, default: false },
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }]
+    is_admin: { type: Boolean, default: false }
+
 });
 userSchema.pre('save', async function (next) {
     const user = this;
@@ -104,21 +98,6 @@ async function addToFavourite(user_id,event_id){
         return { status: 400, message: 'Event is already in favorites' };
     }
 
-    user.favorites.push(event_id);
-    await user.save();
-    return user;
-}
-
-async function deleteOfFavourite(user_id,event_id){
-    user = await User.findOne(_id = user_id);
-    const index = user.favorites.indexOf(event_id);
-
-    if (index !== -1) {
-        user.favorites.splice(index, 1);
-        await user.save();
-    }
-    return user;
-}
 
 module.exports = {
     User: User,

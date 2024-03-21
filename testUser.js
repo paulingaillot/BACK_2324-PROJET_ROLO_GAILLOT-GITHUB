@@ -100,40 +100,11 @@ async function testLogin() {
     }
 }
 
-async function testAddFavourite() {
 
-    try {
-        console.log('Adding an event...');
-        let user = await User.addUser(userData2);
-        const eventData = {
-            creator: user._id,
-            name: "blbl",
-            image: Buffer.from('example_picture_data'),
-            theme: 'event',
-            prix: 15,
-            date: new Date('1990-01-01')
-        };
-
-        const newEvent = await Event.addEvent(eventData);
-        console.log('Event added:', newEvent);
-        user = await User.addToFavourite(user._id, newEvent._id);
-        console.log(user);
-        user = await User.deleteOfFavourite(user._id,newEvent._id);
-        console.log(user);
-
-        await User.deleteUser(user._id);
-        await Event.deleteEvent(newEvent._id);
-    } catch (error) {
-        console.error('Error adding event:', error);
-        throw error;
-    }
-
-}
 // Run the test functions
 testAddUser()
     .then(() => testEditUser())
     .then(() => testGetUser())
     .then(() => testDeleteUser())
-    .then(() => testAddFavourite())
     .then(() => closeConnection())
     .catch(error => console.error('Test error:', error));
