@@ -215,7 +215,8 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/token', (req, res) => {
+router.post('/token', (req, res) => {*
+    try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         return res.sendStatus(401);
@@ -230,6 +231,10 @@ router.post('/token', (req, res) => {
         const accessToken = jwt.sign({ username: user.username }, 'supersecret', { expiresIn: '120s' });
         res.json({ accessToken: accessToken });
     });
+}catch(error) {
+    console.error('Error during login:', error);
+    res.status(400).json({ error: error.message });
+}
 });
 
 
