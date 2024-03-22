@@ -228,7 +228,7 @@ router.post('/token', (req, res) => {*
         if (err) {
             return res.sendStatus(403);
         }
-        const accessToken = jwt.sign({ username: user.username }, 'supersecret', { expiresIn: '120s' });
+        const accessToken = jwt.sign({ username: user1.username }, 'supersecret', { expiresIn: '120s' });
         res.json({ accessToken: accessToken });
     });
 }catch(error) {
