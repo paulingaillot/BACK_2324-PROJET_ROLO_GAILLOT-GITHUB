@@ -6,7 +6,7 @@ var jwt= require('jsonwebtoken');
 // Middleware pour parser le corps des requêtes en JSON
 router.use(express.json());
 
-router.post('/token', (req, res) => {
+router.post('/token', async (req, res) => {
     try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
