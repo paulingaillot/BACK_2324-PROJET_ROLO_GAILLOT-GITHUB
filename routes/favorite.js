@@ -83,14 +83,6 @@ router.post('/', async (req, res) => {
 // Delete a favorite
 router.delete('/', async (req, res) => {
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) {
-            return res.sendStatus(401);
-        }
-    
-        const token = authHeader.split(' ')[1];  // Authorization: Bearer <token>
-    
-        jwt.verify(token, 'supersecret', async (err, user1) => {
         const { userId, eventId } = req.body;
         await deleteFav(userId, eventId);
         res.json({ message: 'Favorite deleted successfully' });

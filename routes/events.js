@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Event, addEvent, editEvent, deleteEvent, getEventById, getAllEvent, filterByName, filterByPriceRange, filterByTheme, sortByPriceAscending, sortByPriceDescending, sortByDateAscending, sortByDateDescending } = require('../model/event');
 var jwt= require('jsonwebtoken');
+const { Event, addEvent, editEvent, deleteEvent, getEventById, getAllEvent, filterByName, filterByPriceRange, filterByTheme, sortByPriceAscending, sortByPriceDescending, sortByDateAscending, sortByDateDescending } = require('../model/Event');
 
 // Middleware pour parser le corps des requêtes en JSON
 router.use(express.json());
@@ -48,6 +48,7 @@ router.put('/:id', async (req, res) => {
         const eventId = req.params.id;
         const newData = req.body;
         const updatedEvent = await editEvent(eventId, newData);
+        console.log(updatedEvent);
         res.json(updatedEvent);
         });
     } catch (error) {

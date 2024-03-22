@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const path = require("path");
 const http = require('http');
@@ -19,32 +20,28 @@ const { createMessage } = require('./model/Message');
 
 app.use(cors())
 
-// const { MongoClient } = require('mongodb');
+const { MongoClient } = require('mongodb');
 
-// const args = process.argv.slice(2);
-// const url = args[0] ?? process.env.CONNECTION_MONGO_STR;
-// const dbName = args[1] ?? "backend2324";
-// const client = new MongoClient(url);
+const args = process.argv.slice(2);
+const url = args[0] ?? process.env.CONNECTION_MONGO_STR;
+const dbName = args[1] ?? "backend2324";
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
 
 app.use('/events',eventsRouter);
 app.use('/users',usersRouter);
 app.use('/favorites',favoriteRouter);
 app.use('/tchat',tchatRouter);
 
-mongoose.connect("mongodb://localhost:27017/isen", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(error => console.error('Error connecting to MongoDB:', error));
-
-
+mongoose.connect(url + '/' + dbName, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('Mongoose connection to MongoDB established successfully');
+    })
+    .catch(err => {
+        console.error('Error occurred while establishing Mongoose connection:', err);
+    });
 
 const server = http.createServer(app);
 const io = new Server(server, {
