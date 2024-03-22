@@ -215,7 +215,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/token', (req, res) => {*
+router.post('/token', (req, res) => {
     try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
