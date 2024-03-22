@@ -86,7 +86,6 @@ router.delete('/', async (req, res) => {
         const { userId, eventId } = req.body;
         await deleteFav(userId, eventId);
         res.json({ message: 'Favorite deleted successfully' });
-        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
