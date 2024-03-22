@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Favorite, add, deleteFav, getByEvent, getByUser} = require('../model/favorite'); // Assuming your Favorite class is in a file called Favorite.js
+const {Favorite, add, deleteFav, getByEvent, getByUser} = require('../model/Favorite'); // Assuming your Favorite class is in a file called Favorite.js
 var jwt= require('jsonwebtoken');
 
 // GET all favorites
