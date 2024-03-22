@@ -7,7 +7,6 @@ const cors = require('cors');
 
 const app = express();
 
-const router = require('./routes/index');
 const usersRouter = require('./routes/users');
 const eventsRouter = require('./routes/events');
 const favoriteRouter = require('./routes/favorite')
@@ -33,8 +32,6 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-
-app.use('/',router);
 app.use('/events',eventsRouter);
 app.use('/users',usersRouter);
 app.use('/favorites',favoriteRouter);
@@ -59,8 +56,6 @@ const io = new Server(server, {
     }
   });
 const port = 3000;
-
-app.use('/', express.static(path.join(__dirname, "client"), {index: "index.html"}));
 
 let users = {};
 io.on('connection', (socket) => {
